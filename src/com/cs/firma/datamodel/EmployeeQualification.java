@@ -1,6 +1,6 @@
 package com.cs.firma.datamodel;
 
-public class EmployeeQualification implements Tester, Developer, ProjectManager {
+public class EmployeeQualification implements ITester, IDeveloper, IProjectManager {
 	Integer testerTestingTypeId[];
 	int testerExperience; 
 	Integer developerDevelopingLanguageId[];

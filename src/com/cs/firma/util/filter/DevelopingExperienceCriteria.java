@@ -4,27 +4,17 @@ import java.util.List;
 
 import com.cs.firma.datamodel.Employee;
 
-public class DevelopingExperienceCriteria implements FilterCriteria{
+public class DevelopingExperienceCriteria {
 
-	int developerExperience; 
-	@Override
-	public boolean matchCriterion(Employee e) {
-		
-		return e.getDeveloperExperience()>developerExperience;
+	int developerExperience;
+
+	public int getDeveloperExperience() {
+		return developerExperience;
 	}
 
-	@Override
-	public List<String> addFilterCriterion(String criterion) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<String> removeFilterCriterion(String criterion) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	public void setDeveloperExperience(int developerExperience) {
+		this.developerExperience = developerExperience;
+	} 
 
 
 }

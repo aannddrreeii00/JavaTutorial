@@ -4,26 +4,18 @@ import java.util.List;
 
 import com.cs.firma.datamodel.Employee;
 
-public class SurnameFilterCriteria implements FilterCriteria {
+public class SurnameFilterCriteria {
 
 	String surname;
-	@Override
-	public boolean matchCriterion(Employee e) {
-	
-		return e.getEmployerSurname().equals(surname);
+
+	public String getSurname() {
+		return surname;
 	}
 
-	@Override
-	public List<String> addFilterCriterion(String criterion) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
-	@Override
-	public List<String> removeFilterCriterion(String criterion) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

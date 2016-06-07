@@ -1,34 +1,71 @@
 package com.cs.firma.util.filter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cs.firma.datamodel.Employee;
 
-public class EmployeeFilter implements FilterCriteria {
+public class EmployeeFilter implements IFilter {
 
-	public enum Criterii {
-		AGE("AGE"), SEX("SEX");
 
-		private final String criterie;
-
-		private Criterii(final String criterie) {
-			this.criterie = criterie;
+	private final List<ICriteria> filter;
+	
+	public EmployeeFilter(){
+		filter = new ArrayList<>();
+	}
+	
+	public void readCriteriaFromKbd (){
+	
+		try {
+			System.out.println("Enter criteria here using ; as separator between criteria and , as separator between criteria name and values : ");
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		    String line = bufferRead.readLine();
+		    
+		    String[] splittedLine =  line.split(";");
+			for (String s: splittedLine){
+				ECriteria criteria = ECriteria.getFromString(s.split(",")[0].toUpperCase());
+				switch (criteria) {
+				case AGE:
+					AgeCriteria ageFillter = new AgeCriteria();
+					ageFillter.setCriteriaName(s.split(",")[0]);
+					ageFillter.setCriteriaValue(Arrays.copyOfRange(s.split(","), 1, s.split(",").length));
+					ageFillter.setAge(Integer.parseInt(s.split(",")[1]));
+					
+					this.filter.add(ageFillter);
+					//System.out.println(this.filter.get(0).getCriteriaName());
+					break;
+				case SEX:
+					SexCriteria sexFillter = new SexCriteria();
+					sexFillter.setCriteriaName(s.split(",")[0]);
+                    sexFillter.setCriteriaValue(Arrays.copyOfRange(s.split(","), 1, s.split(",").length));
+					sexFillter.setSex(s.split(",")[1].charAt(0));
+					this.filter.add(sexFillter);
+					break;
+				case UNKNOWN:
+					default:
+						throw new RuntimeException("Unknown criteria!");
+						
+				}
+				
+			}
+					
+			
+		} catch (IOException e) {
+			// TODO: handle exception
 		}
 
-		public String toString() {
-			return criterie;
-		}
 	}
 
-	List<String> criteria;
-
-	public List<Employee> filter(List<Employee> employeeList, List<FilterCriteria> criteria) {
+	public List<Employee> filterE (List<Employee> employeeList) {
 
 		List<Employee> filteredEmployeeList = new ArrayList<>();
 		for (Employee empl : employeeList) {
 			boolean match = true;
-			for (FilterCriteria cr : criteria) {
+			for (ICriteria cr : this.filter) {
 				match = cr.matchCriterion(empl);
 				if (!match) {
 					break;
@@ -42,44 +79,36 @@ public class EmployeeFilter implements FilterCriteria {
 		return filteredEmployeeList;
 
 	}
-
+	
 
 	@Override
-	public List<String> addFilterCriterion(String criterion) {
-
-		for (String cr : this.criteria) {
-			if (cr.equalsIgnoreCase(criterion)) {
-				System.out.println("This criterion already exists!");
-			} else {
-				this.criteria.add(criterion);
+	public List<ICriteria> addCriterion(ICriteria criterion) {
+		
+		for (ICriteria c: this.filter){
+			if (!c.getCriteriaName().equals(criterion.getCriteriaName())){
+				this.filter.add( c);
+			}
+			else{
+				System.out.println("Already exists!");
 			}
 		}
-		return this.criteria;
+		return this.filter;
 	}
 
-	@Override
-	public List<String> removeFilterCriterion(String criterion) {
-		boolean criterionExists = false;
-		int index = -1;
-		for (String cr : this.criteria) {
-			if (cr.equalsIgnoreCase(criterion)) {
-				criterionExists = true;
-				index = this.criteria.indexOf(cr);
-			} else {
-			}
-			if (criterionExists) {
-				this.criteria.remove(index);
-			} else {
-				System.out.println("This criterion doesn't exists!");
-			}
 
+	@Override
+	public List<ICriteria> removeCriterion(ICriteria criterion) {
+		for (ICriteria c: this.filter){
+			if (c.getCriteriaName().equals(criterion.getCriteriaName())){
+				this.filter.remove( c);
+			}
+			else {
+				System.out.println("Does not exist!");
+			}
 		}
-		return this.criteria;
+		return this.filter;
 	}
 
-	@Override
-	public boolean matchCriterion(Employee e) {
 
-		return false;
-	}
+	
 }

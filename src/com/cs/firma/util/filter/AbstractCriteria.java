@@ -1,6 +1,6 @@
 package com.cs.firma.util.filter;
 
-public class Criteria implements CriteriaI{
+public abstract class AbstractCriteria {
 	
 	String criteriaName;
 	String[] criteriaValue;
@@ -18,6 +18,4 @@ public class Criteria implements CriteriaI{
 		this.criteriaValue = criteriaValue;
 	}
 	
-
-
 }

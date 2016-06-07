@@ -1,6 +1,8 @@
 package com.cs.firma.util.filter;
 
-public interface CriteriaI {
+import com.cs.firma.datamodel.Employee;
+
+public interface ICriteria {
 	
 	
 	public void setCriteriaName (String criteriaName);
@@ -8,4 +10,7 @@ public interface CriteriaI {
 	
 	public void setCriteriaValue(String[] criteriaValue);
 	public String[] getCriteriaValue ();
+	
+	public boolean matchCriterion(Employee e);
+
 }

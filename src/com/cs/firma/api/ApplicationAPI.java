@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cs.firma.datamodel.Employee;
-import com.cs.firma.util.filter.AgeFilterCriteria;
-import com.cs.firma.util.filter.Criteria;
+import com.cs.firma.util.filter.AgeCriteria;
+import com.cs.firma.util.filter.AbstractCriteria;
 import com.cs.firma.util.filter.EmployeeFilter;
-import com.cs.firma.util.filter.FilterCriteria;
-import com.cs.firma.util.filter.SexFilterCriteria;
+import com.cs.firma.util.filter.IFilter;
+import com.cs.firma.util.filter.SexCriteria;
 
 
 public class ApplicationAPI {
@@ -28,74 +28,35 @@ public class ApplicationAPI {
 		
 		List<Employee> employeeList = loadEmployee();
 		printEmployees(employeeList);
-		List<Criteria> criteria = readCriteriaFromKbd();
-		filterE(employeeList,criteria);
+		filterEmployee(employeeList);
+		System.out.println("End of execution!");
 	}
 	
 	
 	
 	
-	public static void filterE(List<Employee> employeeList, List<Criteria> criteria){
-		EmployeeFilter emplFilter = new EmployeeFilter();
-		List<FilterCriteria> filterCriteria = new ArrayList();
-		for(Criteria cr: criteria){
-			switch (cr.getCriteriaName().toUpperCase()) {
-			case "AGE":
-				System.out.println("Se doreste filtrarea dupa varsta");
-				AgeFilterCriteria ageFillter = new AgeFilterCriteria();
-				ageFillter.setAge(Integer.parseInt(cr.getCriteriaValue()[0]));
-				filterCriteria.add(ageFillter);
-				break;
-			case "SEX":
-				System.out.println("Se doreste filtrarea dupa sex");
-				SexFilterCriteria sexFillter = new SexFilterCriteria();
-				sexFillter.setSex(cr.getCriteriaValue()[0].charAt(0));
-				filterCriteria.add(sexFillter);
-				break;
-			}
+	public static void filterEmployee(List<Employee> employeeList){
+		try{
+			EmployeeFilter filter = new EmployeeFilter();
+			filter.readCriteriaFromKbd();
+			List<Employee> l=filter.filterE(employeeList);
+			printEmployees(l);
+		} catch(RuntimeException re){
+			System.out.println(re.getMessage());
+		}
+	     
+	}
+	
 
-		}
-		List<Employee> l=emplFilter.filter(employeeList, filterCriteria);
-		printEmployees(l);
-	}
-	
-	public static List<Criteria> readCriteriaFromKbd (){
-		
-		List<Criteria> criteria = new ArrayList<>();
-		
-		try {
-			System.out.println("Enter criteria here using ; as separator between criteria and , as separator between criteria name and values : ");
-			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		    String line = bufferRead.readLine();
-		    
-		    String[] splittedLine =  line.split(";");
-			for (String s: splittedLine){
-				Criteria cr = new Criteria();
-				cr.setCriteriaName(s.split(",")[0]);
-				System.out.println(cr.getCriteriaName());
-				
-				cr.setCriteriaValue(Arrays.copyOfRange(s.split(","), 1, s.split(",").length));
-				for (String x: cr.getCriteriaValue()){
-					System.out.println("valoare "+x);
-				}
-				criteria.add(cr);
-			}
-					
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return criteria;
-	}
 	
 	public static List<Employee> loadEmployee(){
-		String  employersFilePath = "C:/Users/slesne/git/JavaTutorial1/data/employers.csv";
-		String  devInfoPath = "C:/Users/slesne/git/JavaTutorial1/data/developers.csv";
-	     String  tstInfoPath = "C:/Users/slesne/git/JavaTutorial1/data/testers.csv";
-	     String  pmInfoPath = "C:/Users/slesne/git/JavaTutorial1/data/project_managers.csv";
+		String  employersFilePath = "C:/My Stuff/_developing/workspace/ExercitiuFirmaProgramare/data/employers.csv";
+		String  devInfoPath = "C:/My Stuff/_developing/workspace/ExercitiuFirmaProgramare/data/developers.csv";
+	     String  tstInfoPath = "C:/My Stuff/_developing/workspace/ExercitiuFirmaProgramare/data/testers.csv";
+	     String  pmInfoPath = "C:/My Stuff/_developing/workspace/ExercitiuFirmaProgramare/data/project_managers.csv";
 		
 		
-		ImportData dataImporter = new ImportData();
+		DataImporter dataImporter = new DataImporter();
 		List<Employee> employeeList = dataImporter.importEmployee(employersFilePath);
 		dataImporter.updateDevInfo(employeeList, devInfoPath);
 		dataImporter.updateTestInfo(employeeList, tstInfoPath);
