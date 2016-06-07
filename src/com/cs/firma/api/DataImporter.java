@@ -12,13 +12,13 @@ import com.cs.firma.datamodel.Employee;
 import com.cs.firma.util.FileLoader;
 
 import static com.cs.firma.util.FileLoader.loadFile;;
-public class ImportData {
+public class DataImporter {
 
 	
-	public ImportData() {
+	public DataImporter() {
 	}
 	public  void importTestingTypes (){
-		FileLoader f= new FileLoader();
+	/*	FileLoader f= new FileLoader();
 		String  filePath = "C:/Users/slesne/git/JavaTutorial1/data/testing_types.csv";
 		
 		try {
@@ -26,11 +26,11 @@ public class ImportData {
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public  void importDevelopingLanguages (){
-		FileLoader f= new FileLoader();
+/*		FileLoader f= new FileLoader();
 		String  filePath = "C:/Users/slesne/git/JavaTutorial1/data/developing_languages.csv";
 		
 		try {
@@ -38,7 +38,7 @@ public class ImportData {
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public  List<Employee> importEmployee (String filePath){
