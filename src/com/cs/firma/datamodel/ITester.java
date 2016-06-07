@@ -1,6 +1,6 @@
 package com.cs.firma.datamodel;
 
-public interface Tester {
+public interface ITester {
 	public void setTesterTestingTypeId(Integer[] testerTestingTypeId);
 	public Integer[] getTesterTestingTypeId();
 	public void setTesterExperience(int testerExperience);
